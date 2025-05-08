@@ -13,18 +13,17 @@ export const BackButton = ({
     label
 }: BackButtonProps) => {
     return (
-        <div className="">
-            <Button
-                variant="link"
-                size="sm"
-                className="font-normal w-full"
-                asChild
-                >
-                <Link href={href}>
-                    {label}
-                </Link>
-            </Button>
-        </div>
+        <Button
+            variant="link"
+            size="sm"
+            className="font-normal w-full"
+            asChild
+        >
+            <Link href={href}>
+                {label}
+            </Link>
+        </Button>
+
     )
 }
 
