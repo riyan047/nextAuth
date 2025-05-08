@@ -1,10 +1,9 @@
 "use client"
-import { CardWrapper } from "@/components/auth/card-wrapper"
+import { CardWrapper } from "@/components/auth/card-wrapper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { LoginSchema } from "@/schemas";
-
 import {
     Form,
     FormControl,
@@ -14,8 +13,11 @@ import {
     FormMessage,
 
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
+
 
 export const LoginForm = () => {
 
@@ -26,6 +28,10 @@ export const LoginForm = () => {
             password: ""
         }
     });
+
+    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+        console.log(values);
+    }
     return (
         <CardWrapper
             headerLabel="Welcome back"
@@ -35,7 +41,7 @@ export const LoginForm = () => {
         >
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(() => { })}
+                    onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-6"
                 >
                     <div className="space-y-4">
@@ -74,7 +80,8 @@ export const LoginForm = () => {
                             )}
                         />
                     </div>
-
+                    <FormError message=""/>
+                    <FormSuccess message=""/>
                     <Button
                         type="submit"
                         className="w-full"
