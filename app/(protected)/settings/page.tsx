@@ -4,7 +4,7 @@ const SettingsPage = async () => {
 
     const session = await auth();
     return (
-        <div className="">
+        <div>
             {JSON.stringify(session)}
         </div>
     )
