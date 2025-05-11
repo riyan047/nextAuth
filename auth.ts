@@ -6,6 +6,10 @@ import { getUserById } from "@/data/user";
 import { UserRole } from "@prisma/client";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  pages:{
+    signIn:"/auth/login",
+    error:"/auth/error"
+  },
   events: {
     async linkAccount({ user }) {
       await db.user.update({
