@@ -6,9 +6,9 @@ import { getUserById } from "@/data/user";
 import { UserRole } from "@prisma/client";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  pages:{
-    signIn:"/auth/login",
-    error:"/auth/error"
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error",
   },
   events: {
     async linkAccount({ user }) {
@@ -17,8 +17,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         data: { emailVerified: new Date() },
       });
     },
-  }, 
+  },
   callbacks: {
+    async signIn({ user, account }) {
+      //allow OAuth without email verification
+      if (account?.provider !== "credentials") return true;
+
+      if (!user.id) throw new Error("User ID is undefined");
+      const existingUser = await getUserById(user.id);
+
+      //preventing sigin if the email is not verified
+      if(!existingUser?.emailVerified) return false;
+
+      return true;
+    },
     async session({ token, session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;

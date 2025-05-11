@@ -4,14 +4,10 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { LoginSchema } from "@/schemas";
 import { AuthError, CredentialsSignin } from "next-auth";
 import * as z from "zod";
+import { generateVerificationToken } from "@/lib/token";
+import { getUserByEmail } from "@/data/user";
 
-// type LoginResponse =
-//   | { success: string; error?: undefined }
-//   | { error: string; success?: undefined };
-
-export const login = async (
-  values: z.infer<typeof LoginSchema>
-) => {
+export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -19,6 +15,19 @@ export const login = async (
   }
 
   const { email, password } = validatedFields.data;
+
+  const existingUser = await getUserByEmail(email);
+
+  if (!existingUser || !existingUser.email || !existingUser.password) {
+    return { error: "Email does not exists!" };
+  }
+  //providing refresh token
+  if (!existingUser.emailVerified) {
+    const verificationToken = await generateVerificationToken(
+      existingUser.email
+    );
+    return { success: "Confirmation email sent!" };
+  }
 
   try {
     await signIn("credentials", {
@@ -35,9 +44,7 @@ export const login = async (
       }
       return { error: "Something went wrong!" };
     }
-    
 
     throw error;
   }
 };
-
