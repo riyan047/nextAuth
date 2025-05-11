@@ -12,6 +12,6 @@ export const sendVerificationEmail = async (
         from:"onBoading@resend.dev",
         to:email,
         subject:"Confirm your email",
-        html:`<p>Click <a href="${confirmLink}">here</a>to confirm email.</p>`
+        html:`<p>Click <a href="${confirmLink}">here </a>to confirm email.</p>`
     })
 };
