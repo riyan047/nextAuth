@@ -5,9 +5,9 @@ import { LoginSchema } from "@/schemas";
 import { AuthError, CredentialsSignin } from "next-auth";
 import * as z from "zod";
 
-type LoginResponse =
-  | { success: string; error?: undefined }
-  | { error: string; success?: undefined };
+// type LoginResponse =
+//   | { success: string; error?: undefined }
+//   | { error: string; success?: undefined };
 
 export const login = async (
   values: z.infer<typeof LoginSchema>
