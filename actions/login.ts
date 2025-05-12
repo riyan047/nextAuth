@@ -6,7 +6,7 @@ import { AuthError, CredentialsSignin } from "next-auth";
 import * as z from "zod";
 import { generateVerificationToken } from "@/lib/token";
 import { getUserByEmail } from "@/data/user";
-import { sendVerificationEmail } from "@/lib/resend";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
