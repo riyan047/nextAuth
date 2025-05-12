@@ -54,4 +54,5 @@ export const newPassword = async (
         id:existingToken.id
     }
   })
+  return{success:"Password updated!"}
 };
