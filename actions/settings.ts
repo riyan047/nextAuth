@@ -16,6 +16,13 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     return { error: "User ID is undefined" };
   }
   const dbUser = await getUserById(user.id);
+  
+  if (user.isOAuth) {
+    values.email = undefined;
+    values.password = undefined;
+    values.newPassword = undefined;
+    values.isTwoFactorEnabled = undefined;
+  }
 
   if (!dbUser) {
     return { error: "Unauthorized!" };

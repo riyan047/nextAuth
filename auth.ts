@@ -32,7 +32,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (!existingUser?.emailVerified) return false;
 
       //adding 2FA check
-
       if (existingUser.isTwoFactorEnabled) {
         const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
           existingUser.id
@@ -70,21 +69,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return session;
     },
-    async jwt({ token }) {
+    async jwt({ token, user, account }) {
       if (!token.sub) return token;
 
       const existingUser = await getUserById(token.sub);
       if (!existingUser) return token;
 
-      const existingAccount = await getAccountByUserId(existingUser.id);
+      // detecting OAuth login
+      if (account) {
+        token.isOAuth = account.provider !== "credentials";
+      }
 
-      token.isOAuth = !!existingAccount;
       token.role = existingUser.role;
       token.name = existingUser.name;
       token.email = existingUser.email;
-
-      //extending to check 2FA
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+
       return token;
     },
   },
