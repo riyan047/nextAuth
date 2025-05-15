@@ -5,7 +5,6 @@ import crypto from "crypto";
 
 import { getPasswordResetTokenByEmail } from "@/data/password-reset-token";
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
-import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 
 export const generateVerificationToken = async (email: string) => {
   const token = uuid();
