@@ -45,7 +45,7 @@ const SettingsPage = () => {
             password: undefined,
             newPassword: undefined,
             role: user?.role || undefined,
-
+            isTwoFactorEnabled: typeof user?.isTwoFactorEnabled === "boolean" ? user.isTwoFactorEnabled : undefined,
         }
     });
 
